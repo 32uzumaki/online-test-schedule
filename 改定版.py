@@ -59,7 +59,7 @@ def validate_date(value, default_date='2024-11-01'):
     try:
         return pd.to_datetime(value)
     except:
-        return pd.NaT
+        return pd.Na
 
 # 'リリース予定日'と'受け入れテスト実施日'の補正
 filtered_schedule['リリース予定日'] = filtered_schedule['リリース予定日'].apply(validate_date)
