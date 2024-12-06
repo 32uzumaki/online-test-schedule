@@ -54,12 +54,14 @@ monthly_capacity_dict = monthly_capacity.set_index('月')['テスト可能台数
 # スケジュールの初期化
 schedule = pd.DataFrame(index=pd.date_range('2024-10-01', '2025-10-31', freq='M').strftime('%Y-%m'), columns=process_priority.keys())
 
+
+
 # 日付検証関数
 def validate_date(value, default_date='2024-11-01'):
     try:
         return pd.to_datetime(value)
     except:
-        return pd.Na
+        return pd.NaT
 
 # 'リリース予定日'と'受け入れテスト実施日'の補正
 filtered_schedule['リリース予定日'] = filtered_schedule['リリース予定日'].apply(validate_date)
