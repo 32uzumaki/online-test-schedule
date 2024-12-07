@@ -8,7 +8,7 @@ equipment_schedule_path = "/Users/komatsutomoaki/Desktop/online-test/online-test
 equipment_schedule = pd.read_csv(equipment_schedule_path)
 
 # 必要な列を選択、リリース実績もカウントできるようにしてたい。
-new_equipment_schedule = equipment_schedule[['工程', '機種名', 'リリース予定日', '初号機テスト実施時期','受入テスト実施日']]
+new_equipment_schedule = equipment_schedule[['工程', '機種名', 'リリース予定日', '開発テスト完了予定日','受入テスト実施日']]
 
 #リリース予定日、受入テスト実施日(装置アドレス)、初講義テスト実施実機(初号機のテストスケジュールより算出)
 #確定分だけでいいのなら、初号機テスト実施実機いらない。
@@ -22,7 +22,7 @@ filtered_schedule = new_equipment_schedule[new_equipment_schedule['工程'].isin
 # 新しい条件に基づいてデータをフィルタリング
 filtered_schedule = new_equipment_schedule[
     (new_equipment_schedule['オンライン対応'] == '〇') &
-    (new_equipment_schedule['装置型式毎の初回テスト対象'] == '増設機')
+    (new_equipment_schedule['装置型式毎の初回テスト対象'] == '〇')
 ]
 """
 
@@ -38,29 +38,26 @@ undecided_schedule = filtered_schedule[filtered_schedule['リリース予定日'
 
 # リリース予定日と初号機テスト実施時期を検証
 filtered_schedule['リリース予定日'] = filtered_schedule['リリース予定日'].apply(validate_date)
-filtered_schedule['初号機テスト実施時期'] = filtered_schedule['初号機テスト実施時期'].apply(validate_date)
-#filtered_schedule['受入テスト実施日'] = filtered_schedule['受入テスト実施日'].apply(validate_date)
+filtered_schedule['開発テスト完了予定日'] = filtered_schedule['開発テスト完了予定日'].apply(validate_date)
+filtered_schedule['受入テスト実施日'] = filtered_schedule['受入テスト実施日'].apply(validate_date)
 
 # 新しい列を追加: 調整後のテスト実施時期
 def determine_test_date(row):
-    """
-    受入テスト実施日が記入されるのは初号機のみ
     if pd.notna(row['受入テスト実施日']):
         # 受入テスト実施日が設定されている場合、その月を確定
         return row['受入テスト実施日']+ pd.DateOffset(months=1)
-    """
-    if pd.isna(row['リリース予定日']) or pd.isna(row['初号機テスト実施時期']):
+    elif pd.isna(row['リリース予定日']) or pd.isna(row['開発テスト完了予定日']):
         # リリース予定日または初号機テスト実施時期が欠損している場合はNaT
         return pd.NaT
-    elif row['リリース予定日'] < row['初号機テスト実施時期']:
+    elif row['リリース予定日'] < row['開発テスト完了予定日']:
         # リリース予定日が初号機テスト実施時期より早い場合、翌月を設定
-        return row['初号機テスト実施時期'] + pd.DateOffset(months=1)
-    elif row['リリース予定日'] > row['初号機テスト実施時期']:
+        return row['開発テスト完了予定日'] + pd.DateOffset(months=1)
+    elif row['リリース予定日'] > row['開発テスト完了予定日']:
         # 初号機テスト実施時期がリリース予定日より早い場合、リリース予定日を設定
         return row['リリース予定日']
     else:
         # 同じ月の場合、翌月を設定
-        return row['初号機テスト実施時期'] + pd.DateOffset(months=1)
+        return row['開発テスト完了予定日'] + pd.DateOffset(months=1)
 
 filtered_schedule['調整後テスト実施時期'] = filtered_schedule.apply(determine_test_date, axis=1)
 
