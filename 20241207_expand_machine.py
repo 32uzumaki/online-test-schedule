@@ -2,7 +2,7 @@ import pandas as pd
 from datetime import datetime, timedelta
 
 # ファイルパス
-equipment_schedule_path = "/Users/komatsutomoaki/Desktop/online-test/online-test-schedule/excel/装置搬入スケジュール2.csv"
+equipment_schedule_path = "/excel/装置搬入スケジュール2.csv"
 
 # データ読み込み
 equipment_schedule = pd.read_csv(equipment_schedule_path)
@@ -104,5 +104,5 @@ date_columns = pd.date_range('2024-10', '2026-03', freq='M').strftime('%Y-%m').t
 pivot_table = pivot_table.reindex(columns=date_columns + ['搬入日未定', '範囲外'], fill_value='')
 
 # CSVファイルに保存
-pivot_table.to_csv('/Users/komatsutomoaki/Desktop/online-test/online-test-schedule/excel/test_schedule_with_out_of_range3.csv', encoding='utf-8-sig')
+pivot_table.to_csv('/excel/test_schedule_with_out_of_range3.csv', encoding='utf-8-sig')
 print("スケジュールがCSVファイルに保存されました。")

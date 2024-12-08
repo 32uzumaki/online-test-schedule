@@ -1,7 +1,7 @@
 import pandas as pd
 
 # CSVファイルを読み込む
-file_path = "/Users/komatsutomoaki/Desktop/Sample_Data_Horizontal__Monthly_Integers__2024-12_to_2025-12_のコピー.csv"  # ファイルパスを指定
+file_path =_のコピー.csv"  # ファイルパスを指定
 data = pd.read_csv(file_path)
 
 # データの整形
@@ -49,7 +49,7 @@ while carry_over > 0:
 transposed_data = data.set_index('Month').T
 
 # 結果を保存
-output_path = '/Users/komatsutomoaki/Desktop/online-test/online-test-schedule/Calculated_Test_Results1.csv'
+output_path = '/Ulated_Test_Results1.csv'
 transposed_data.to_csv(output_path)
 
 print(f"計算結果が保存されました（横軸に月を設定）: {output_path}")

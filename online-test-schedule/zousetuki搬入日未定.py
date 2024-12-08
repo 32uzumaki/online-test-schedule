@@ -2,8 +2,7 @@ import pandas as pd
 from datetime import datetime
 
 # ファイルパス
-equipment_schedule_path = "/Users/komatsutomoaki/Desktop/online-test/online-test-schedule/装置搬入スケジュール.csv"
-
+equipment_schedule_path = 
 # データ読み込み
 equipment_schedule = pd.read_csv(equipment_schedule_path)
 
