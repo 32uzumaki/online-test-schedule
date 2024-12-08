@@ -14,10 +14,10 @@ new_equipment_schedule = equipment_schedule[['工程', '機種名', 'リリー�
 #確定分だけでいいのなら、初号機テスト実施実機いらない。
 #DXC開発スケジュールを基に算出する必要があるのなら、初号機のテストスケジュールを作成してやる必要性がある。
 
-# 有効なエリアのみをフィルタリング
-valid_areas = ['SubBE', 'EPI', 'WP表', 'WP裏', 'EDS']
-filtered_schedule = new_equipment_schedule[new_equipment_schedule['工程'].isin(valid_areas)]
-
+"""
+確定分の増設機のテストスケジュールを算出するために必要なこと。
+＞＞受入テスト実施日をその他の装置にも反映させる。
+"""
 """
 # 新しい条件に基づいてデータをフィルタリング
 filtered_schedule = new_equipment_schedule[
@@ -25,6 +25,9 @@ filtered_schedule = new_equipment_schedule[
     (new_equipment_schedule['装置型式毎の初回テスト対象'] == '増設機')
 ]
 """
+# 有効なエリアのみをフィルタリング
+valid_areas = ['SubBE', 'EPI', 'WP表', 'WP裏', 'EDS']
+filtered_schedule = new_equipment_schedule[new_equipment_schedule['工程'].isin(valid_areas)]
 
 # 日付検証関数
 def validate_date(value):

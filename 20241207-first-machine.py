@@ -1,6 +1,12 @@
 import pandas as pd
 from datetime import datetime, timedelta
 
+"""
+最新の増設機のスケジュールを見積もりに必要なこと
+・初号機のテストスケジュールより、初号機テスト実施時期を算出。
+＞＞受入テスト実施日が初号機テスト実施時期になる。（確定分）
+＞＞確定分以外は、DXC開発完了予定日より算出？？これが初号機テスト実施時期に該当。
+"""
 # ファイルパス
 equipment_schedule_path = "/excel/装置搬入スケジュール2.csv"
 
