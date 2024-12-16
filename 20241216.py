@@ -10,9 +10,13 @@ equipment_schedule = pd.read_csv(equipment_schedule_path)
 new_equipment_schedule = equipment_schedule[['工程', '機種名', 'リリース予定日', '増設機テスト実施時期']]
 
 # 有効なエリアのみをフィルタリング
-valid_areas = ['SubBE', 'EPI', 'WP表', 'WP裏', 'EDS']
+valid_areas = ['SubBE', 'EPI', 'WP表', 'WP裏']
 filtered_schedule = new_equipment_schedule[new_equipment_schedule['工程'].isin(valid_areas)]
 
+# 新しい条件に基づいてデータをフィルタリング
+filtered_schedule = new_equipment_schedule[
+    (new_equipment_schedule['オンライン対応'] == '〇')
+]
 # 日付検証関数
 def validate_date(value):
     try:
@@ -21,28 +25,28 @@ def validate_date(value):
         return pd.NaT
 
 # '搬入日未定'データを抽出
-undecided_schedule = filtered_schedule[filtered_schedule['増設機テスト実施時期'] == '搬入日未定']
+undecided_schedule = filtered_schedule[filtered_schedule['リリース予定日'] == '搬入日未定']
 
 # リリース予定日と初号機テスト実施時期を検証
-filtered_schedule['増設機テスト実施時期'] = filtered_schedule['増設機テスト実施時期'].apply(validate_date)
+filtered_schedule['リリース予定日'] = filtered_schedule['リリース予定日'].apply(validate_date)
 
 # 範囲外データの抽出
 start_range = pd.Timestamp('2024-10-01')
 end_range = pd.Timestamp('2026-03-31')
 
 out_of_range_schedule = filtered_schedule[
-    (filtered_schedule['増設機テスト実施時期'] < start_range) |
-    (filtered_schedule['増設機テスト実施時期'] > end_range)
+    (filtered_schedule['リリース予定日'] < start_range) |
+    (filtered_schedule['リリース予定日'] > end_range)
 ]
 
 # 範囲内のデータのみ保持
 filtered_schedule = filtered_schedule[
-    (filtered_schedule['増設機テスト実施時期'] >= start_range) &
-    (filtered_schedule['増設機テスト実施時期'] <= end_range)
+    (filtered_schedule['リリース予定日'] >= start_range) &
+    (filtered_schedule['リリース予定日'] <= end_range)
 ]
 
 # 月列と工程列を基準にデータをピボット
-filtered_schedule['年月'] = filtered_schedule['増設機テスト実施時期'].dt.strftime('%Y-%m')
+filtered_schedule['年月'] = filtered_schedule['リリース予定日'].dt.strftime('%Y-%m')
 
 # ピボットテーブルの作成
 pivot_table = filtered_schedule.pivot_table(
