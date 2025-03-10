@@ -1,7 +1,7 @@
 import pandas as pd
 
 # ファイルパス
-equipment_schedule_path = "xcel/装置搬入スケジュール2.csv"
+equipment_schedule_path = "/Users/komatsutomoaki/Desktop/online-test/online-test-schedule/excel/装置搬入スケジュール2.csv"
 
 # データ読み込み
 equipment_schedule = pd.read_csv(equipment_schedule_path)
@@ -14,9 +14,12 @@ valid_areas = ['SubBE', 'EPI', 'WP表', 'WP裏']
 filtered_schedule = new_equipment_schedule[new_equipment_schedule['工程'].isin(valid_areas)]
 
 # 新しい条件に基づいてデータをフィルタリング
+"""
 filtered_schedule = new_equipment_schedule[
     (new_equipment_schedule['オンライン対応'] == '〇')
 ]
+"""
+
 # 日付検証関数
 def validate_date(value):
     try:
@@ -66,7 +69,7 @@ pivot_table['範囲外'] = out_of_range_schedule.groupby('工程')['機種名'].
 pivot_table['搬入日未定'] = undecided_schedule.groupby('工程')['機種名'].apply(lambda x: '\n'.join(x)).reindex(pivot_table.index, fill_value='')
 
 # 列を2024年10月から2026年3月の順に並べ替え
-date_columns = pd.date_range('2024-10', '2026-03', freq='M').strftime('%Y-%m').tolist()
+date_columns = pd.date_range('2024-10', '2026-03', freq='ME').strftime('%Y-%m').tolist()
 pivot_table = pivot_table.reindex(columns=date_columns + ['搬入日未定', '範囲外'], fill_value='')
 
 # 工程のソート順を指定
@@ -74,5 +77,11 @@ custom_order = ['SubBE', 'EPI', 'WP表', 'WP裏']
 pivot_table = pivot_table.reindex(custom_order)
 
 # CSVファイルに保存
-pivot_table.to_csv('/test_schedule_with_out_of_range_sorted.csv', encoding='utf-8-sig')
-print("スケジュールがCSVファイルに保存されました。")
+#pivot_table.to_excel('/Users/komatsutomoaki/Desktop/online-test/online-test-schedule/excel/test_schedule_with_out_of_range_sorted.csv')
+
+
+
+# エクセルファイルに保存
+output_path = '/Users/komatsutomoaki/Desktop/online-test/online-test-schedule/excel/test_schedule_with_out_of_range_sorted.xlsx'
+pivot_table.to_excel(output_path, engine='openpyxl')
+print(f"スケジュールがエクセルファイルに保存されました: {output_path}")

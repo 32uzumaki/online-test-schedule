@@ -2,3 +2,10 @@ excel/test_schedule_expand_machine.csv
 excel/test_schedule_with_out_of_range2.csv
 excel/装置搬入スケジュール.csv
 excel/装置搬入スケジュール.csv
+.DS_Store
+.DS_Store
+.DS_Store
+.gitignore
+excel/import pandas as pd.py
+excel/test_schedule_with_out_of_range_sorted.csv
+excel/test_schedule_with_out_of_range3.csv
