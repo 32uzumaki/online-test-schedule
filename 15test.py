@@ -3,15 +3,27 @@ import pandas as pd
 # =============================================================================
 # 1) Excelファイルから累計データを読み込む
 # =============================================================================
+
+"""
 excel_file = "TestData.xlsx"  # エクセルファイルのパス
 sheet_name = "TestSheet"      # シート名（実際の名前を指定）
+"""
+
+# CSVファイルのパス
+csv_file = "/Users/komatsutomoaki/Desktop/Test_Completion_by_Priority.csv"
+
+# 1) CSV を読み込み (header=0 で1行目を列名とする)
+df_cumulative = pd.read_csv(csv_file, header=0)
 
 # header=0: 1行目を列名にする
+"""
 df_cumulative = pd.read_excel(
     excel_file,
     sheet_name=sheet_name,
     header=0
 )
+"""
+
 
 # もしA列の列名が "Date" ではなく、「Unnamed: 0」などの列名になっている場合はリネーム
 if df_cumulative.columns[0] != "Date":
@@ -114,7 +126,7 @@ else:
     # =============================================================================
     df_results = pd.DataFrame(results)
     print("▼ テスト進捗状況(各月ごとのテスト実施数・月末の残数)")
-    display(df_results)
+    print(df_results)
 
     final_month = df_results["Month"].iloc[-1]
     print(f"\nすべての装置のテストが完了したのは {final_month} 時点です。")
